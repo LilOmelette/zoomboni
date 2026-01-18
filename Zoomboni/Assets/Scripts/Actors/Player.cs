@@ -16,7 +16,7 @@ public class Player : Character
 
     internal InputAction
         inputMove,
-        inputJump
+        inputSlide
         ;
 
     [SerializeField] internal GameObject containerForModel;
@@ -37,7 +37,8 @@ public class Player : Character
     {
         base.Awake();
         inputMove = playerInput.actions.FindAction("Move");
-        inputJump = playerInput.actions.FindAction("Jump");
+        inputSlide = playerInput.actions.FindAction("Slide");
+        print(inputSlide);
     }
 
     private void Update()
@@ -53,7 +54,7 @@ public class Player : Character
         Vector3 crossVector = Vector3.Cross(directionContainerForModel, normalRotation);
         if (crossVector.magnitude > 0)
         {
-            float lerpRotation = 0; // ((PlayerState)stateMachine.GetState()).GetLerpRotation();
+            float lerpRotation = stateMachine.GetState().GetLerpRotation();
             Quaternion rotationTarget = Quaternion.LookRotation(crossVector, normalRotation) * Quaternion.Euler(0, 90, 0);
             containerForModel.transform.rotation = Quaternion.Lerp(containerForModel.transform.rotation, rotationTarget, lerpRotation * Time.deltaTime);
         }

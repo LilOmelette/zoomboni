@@ -1,9 +1,12 @@
 ﻿using System;
 using UnityEngine;
 
-public abstract class State : MonoBehaviour {
+public abstract class State : MonoBehaviour
+{
 
-    public Character owner;
+    protected static float DEAD_ZONE = 0.1f;
+
+    public Player player;
     protected StateMachine stateMachine;
 
     public void Awake() {
@@ -11,7 +14,7 @@ public abstract class State : MonoBehaviour {
     }
     
     public bool IsObjectInRange(GameObject obj, float min, float max) {
-        Vector3 differenceInPosition = owner.transform.position - obj.transform.position;
+        Vector3 differenceInPosition = player.transform.position - obj.transform.position;
         differenceInPosition.y = 0;
         float distance = differenceInPosition.magnitude;
 
@@ -19,7 +22,7 @@ public abstract class State : MonoBehaviour {
     }
     
     protected Vector3 GetMovementTowardsPosition(Vector3 position, float SPEED_MOVE, float GRAVITY = 0, float DISTANCE_MINIMUM = 0, bool ignoreVertical = false) {
-        Vector3 diffPosition = position - owner.transform.position;
+        Vector3 diffPosition = position - player.transform.position;
         if (ignoreVertical) {
             diffPosition.y = 0;
         }
@@ -34,14 +37,20 @@ public abstract class State : MonoBehaviour {
     }
 
     protected bool IsAnimationFinished(){
-        if (!owner.animator) {
+        if (!player.animator) {
             return true;
         }
         else {
-            return owner.animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && !owner.animator.IsInTransition(0);
+            return player.animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && !player.animator.IsInTransition(0);
         }
     }
-    
+
+    internal Vector3 ApplyAcc(Vector3 velocity, float ACC)
+    {
+        velocity += player.directionMovement * ACC * Time.deltaTime;
+        return velocity;
+    }
+
     internal Vector3 ApplyGravity(Vector3 velocity, float GRAV) {
         velocity.y += GRAV * Time.deltaTime;
         return velocity;
@@ -62,11 +71,10 @@ public abstract class State : MonoBehaviour {
     }
 
     
-    internal bool CheckGround(float height = 0.25f, float range = 0.75f, float distanceToFloor = 0.55f, bool checkSlope = true, Vector3 mod = new Vector3()) {
-        float rangeCC = range * owner.cc.radius;
-        float rangeCCB = range * owner.cc.radius;
-        float heightCC = height * owner.cc.height;
-        float distanceCC = distanceToFloor * owner.cc.height;
+    internal bool CheckGround(float height = 0.5f, float range = 0.95f, float distanceToFloor = 0.65f, bool checkSlope = true, Vector3 mod = new Vector3()) {
+        float rangeCC = range * player.cc.radius;
+        float heightCC = height * player.cc.height;
+        float distanceCC = distanceToFloor * player.cc.height;
 
         float a = CheckFloorHelper(new Vector3(rangeCC, heightCC, rangeCC) + mod, Vector3.down, distanceCC, checkSlope);
         float b = CheckFloorHelper(new Vector3(-rangeCC, heightCC, rangeCC) + mod, Vector3.down, distanceCC, checkSlope);
@@ -91,7 +99,7 @@ public abstract class State : MonoBehaviour {
             float ANGLE_MAX = 70.0f/90.0f;
             // TODO: THIS IS STUPID - only PlayerState should check with AngleMax. make a protected function to overwrite in player state
             if (!checkSlope || Library.IsBetweenGivenSlopes(hit.normal, 0, ANGLE_MAX)) {
-                return owner.transform.position.y - hit.transform.position.y;
+                return player.transform.position.y - hit.transform.position.y;
             }
             else {
                 return none;
@@ -101,7 +109,7 @@ public abstract class State : MonoBehaviour {
     }
 
     internal RaycastHit CheckSurface(Vector3 distanceFromTransform, Vector3 direction, float distance, bool debugOn = false) {
-        Ray ray = new Ray(owner.transform.position + distanceFromTransform, direction);
+        Ray ray = new Ray(player.transform.position + distanceFromTransform, direction);
         Physics.Raycast(
             ray, 
             out RaycastHit hitFloor, 
@@ -122,6 +130,12 @@ public abstract class State : MonoBehaviour {
         /**/
     }
 
+    private readonly float lerpRotation = 45.0f;
+    public virtual float GetLerpRotation()
+    {
+        return lerpRotation;
+    }
+
     public virtual bool CanBeHurt() {
         return true;
     }
@@ -134,5 +148,12 @@ public abstract class State : MonoBehaviour {
     
     public virtual void OnLateUpdate() {
         /**/
+    }
+
+
+    internal Vector3 ApplyForce(Vector3 velocity)
+    {
+        velocity += player.velocityFromForce * Time.deltaTime;
+        return velocity;
     }
 }
