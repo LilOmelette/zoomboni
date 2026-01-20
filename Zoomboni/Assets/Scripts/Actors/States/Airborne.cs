@@ -3,14 +3,16 @@ using UnityEngine;
 public class Airborne : State
 {
 
-    [SerializeField] private State stateSlide;
+    [SerializeField] private State stateLand;
 
     [SerializeField] private float GRAVITY = 1.0f;
     [SerializeField] private float ACCELERATION = 1.0f;
     [SerializeField] private float FRICTION = 1.0f;
+
+    [SerializeField] private Vector3 startScale = new Vector3(0.8f, 1.3f, 0.8f);
     public override void Enter(Component arg)
     {
-        player.containerForModel.transform.localScale = new Vector3(0.8f, 1.3f, 0.8f);
+        player.containerForModel.transform.localScale = startScale;
     }
 
     public override void Exit()
@@ -28,6 +30,7 @@ public class Airborne : State
         Vector3 velocity = new Vector3(player.cc.velocity.x, player.cc.velocity.y, player.cc.velocity.z);
 
         velocity = ApplyGravity(velocity, GRAVITY);
+        velocity = ApplyAcc(velocity, ACCELERATION);
 
 
         player.cc.Move(velocity * Time.deltaTime);
@@ -39,7 +42,7 @@ public class Airborne : State
 
         if (isPlayerCloseToGround)
         {
-            stateMachine.Change(stateSlide, this);
+            stateMachine.Change(stateLand, this);
         }
     }
 }
