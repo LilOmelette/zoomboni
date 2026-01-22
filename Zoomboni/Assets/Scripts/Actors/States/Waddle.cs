@@ -53,7 +53,7 @@ public class Waddle : State
             stateMachine.Change(stateSlide, this);
         }
 
-        if (!CheckGround())
+        if (!CheckSlide())
         {
             stateMachine.Change(stateAirborne);
         }

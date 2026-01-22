@@ -5096,7 +5096,9 @@ MonoBehaviour:
   sfxStart: {fileID: 5413555280917313618}
   sfxLoop: {fileID: 8635921498583761853}
   stateSlide: {fileID: 3009586430424134423}
+  stateSit: {fileID: 4895127026115802986}
   fx: {fileID: 2010679907639254254}
+  MINIMUM_SPEED_BEFORE_SLIDE: 4
 --- !u!1 &1417069543608147557
 GameObject:
   m_ObjectHideFlags: 0
@@ -5237,7 +5239,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 0027bbfb8d9580d4fbde11fb1b035cf6, type: 3}
+  m_Resource: {fileID: 8300000, guid: 8c1f4ec2e15f3e6448dc3900c565d0b7, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -5847,7 +5849,7 @@ MonoBehaviour:
   ACC: 1
   FRIC: 0.996
   GRAV: -10
-  BOUNCE_INIT: 32
+  BOUNCE_INIT: 16
   BOUNCE_XZ_INIT: 0
   FIXED_BOUNCE_XZ_INIT: 0
   anim: 
