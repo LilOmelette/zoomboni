@@ -83,16 +83,57 @@ public abstract class State : MonoBehaviour
         return fricFrame;
     }
 
-    
-    internal bool CheckGround(float height = 0.55f, float range = 0.75f, float distanceToFloor = 0.65f, bool checkSlope = true, Vector3 mod = new Vector3()) {
-        float rangeCC = range * player.cc.radius;
-        float heightCC = height * player.cc.height;
-        float distanceCC = distanceToFloor * player.cc.height;
+    internal bool CheckSlide()
+    {
+        float rangeCC = player.GROUND_RANGE * player.cc.radius;
+        float heightCC = player.GROUND_HEIGHT * player.cc.height;
+        float distanceCC = player.DISTANCE_TO_FLOOR * player.cc.height;
 
-        float a = CheckFloorHelper(new Vector3(rangeCC, heightCC, rangeCC) + mod, Vector3.down, distanceCC, checkSlope);
-        float b = CheckFloorHelper(new Vector3(-rangeCC, heightCC, rangeCC) + mod, Vector3.down, distanceCC, checkSlope);
-        float c = CheckFloorHelper(new Vector3(rangeCC, heightCC, -rangeCC) + mod, Vector3.down, distanceCC, checkSlope);
-        float d = CheckFloorHelper(new Vector3(-rangeCC, heightCC, -rangeCC) + mod, Vector3.down, distanceCC, checkSlope);
+        float stuckInTheMiddleWithYou = CheckFloorHelper(
+            new Vector3(0, heightCC, 0), Vector3.down,
+            distanceCC, true);
+
+        Vector3 frontFacing = Vector3.Cross(new Vector3(rangeCC, 0, rangeCC), player.GetFacing());
+        frontFacing.y += heightCC;
+        float heyDownInFront = CheckFloorHelper( frontFacing, Vector3.down,
+                                                    distanceCC, true);
+
+        Vector3 backFacing = Vector3.Cross(new Vector3(rangeCC, 0, rangeCC), -player.GetFacing());
+        backFacing.y += heightCC;
+        float itCameFromBehind = CheckFloorHelper( backFacing, Vector3.down,
+                                                    distanceCC, true);
+
+        float[] values;
+        float[] smalues = { stuckInTheMiddleWithYou, heyDownInFront, itCameFromBehind };
+        values = smalues;
+
+        return Mathf.Max(values) > -100;
+    }
+
+    internal bool CheckGround(bool checkSlope = true, Vector3 mod = new Vector3()) {
+        float rangeCC = player.GROUND_RANGE * player.cc.radius;
+        float heightCC = player.GROUND_HEIGHT * player.cc.height;
+        float distanceCC = player.DISTANCE_TO_FLOOR * player.cc.height;
+
+        float a = CheckFloorHelper(
+            new Vector3(rangeCC, heightCC, rangeCC) 
+            + mod, Vector3.down, 
+            distanceCC, checkSlope);
+
+        float b = CheckFloorHelper(
+            new Vector3(-rangeCC, heightCC, rangeCC)
+            + mod, Vector3.down, 
+            distanceCC, checkSlope);
+
+        float c = CheckFloorHelper(
+            new Vector3(rangeCC, heightCC, -rangeCC) 
+            + mod, Vector3.down, 
+            distanceCC, checkSlope);
+
+        float d = CheckFloorHelper(
+            new Vector3(-rangeCC, heightCC, -rangeCC) 
+            + mod, Vector3.down, 
+            distanceCC, checkSlope);
 
         float[] values;
         float[] smalues = { a,b,c,d };
@@ -121,7 +162,8 @@ public abstract class State : MonoBehaviour
         }
     }
 
-    internal RaycastHit CheckSurface(Vector3 distanceFromTransform, Vector3 direction, float distance, bool debugOn = false) {
+    internal RaycastHit CheckSurface(
+        Vector3 distanceFromTransform, Vector3 direction, float distance, bool debugOn = false) {
         Ray ray = new Ray(player.transform.position + distanceFromTransform, direction);
         Physics.Raycast(
             ray, 

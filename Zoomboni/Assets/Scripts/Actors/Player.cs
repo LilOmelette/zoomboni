@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -7,6 +8,10 @@ public class Player : Character
 
     [Header("Stats")]
     [SerializeField] internal float GRAVITY = -40.0f;
+    [SerializeField] internal float GROUND_HEIGHT = 0.65f;
+
+    [SerializeField] internal float GROUND_RANGE = 0.85f;
+    [SerializeField] internal float DISTANCE_TO_FLOOR = 0.75f;
 
     [Header("Misc")]
     [SerializeField] internal float DEAD_ZONE;
@@ -21,9 +26,10 @@ public class Player : Character
 
     [SerializeField] internal GameObject containerForModel;
     [SerializeField] internal GameObject model;
-    [SerializeField] internal StateMachine stateMachine;
 
+    [SerializeField] internal StateMachine stateMachine;
     [SerializeField] internal List<State> statesGrounded;
+    [SerializeField] internal State stateBounce;
 
     internal Vector3 directionContainerForModel = new Vector3();
     internal Vector3 velocityFromForce = new Vector3();
@@ -184,6 +190,15 @@ public class Player : Character
     public override bool IsGrounded()
     {
         return InGroundState();
+    }
+
+    internal void SignalBounce()
+    {
+        if (stateMachine.GetState() != stateBounce)
+        {
+            stateMachine.Change(stateBounce); 
+        }
+        
     }
 
 }

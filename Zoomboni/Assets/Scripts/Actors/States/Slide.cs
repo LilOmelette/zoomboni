@@ -3,8 +3,9 @@ using UnityEngine;
 public class Slide : State
 {
 
-    [SerializeField] private State stateWaddle;
-    [SerializeField] private State stateAirborne;
+    [SerializeField] internal State stateWaddle;
+    [SerializeField] internal State stateAirborne;
+    [SerializeField] internal State stateBrake;
 
     [SerializeField] private float START_POWER;
 
@@ -25,12 +26,16 @@ public class Slide : State
 
     [SerializeField] private Timer timerLand;
 
+    [SerializeField] private AudioSource sfxStart;
+    [SerializeField] private AudioSource sfxLoop;
+
     private bool shouldIApplyStartPower = false;
 
     public override void Enter(Component statePrior)
     {
-
         shouldIApplyStartPower = !(statePrior is Airborne);
+        if (shouldIApplyStartPower) sfxStart.Play();
+
         if (statePrior is Airborne)
         {
             if (player.cc.velocity.y < 0)
@@ -44,12 +49,15 @@ public class Slide : State
 
             timerLand.End();
         }
+
+        sfxLoop.Play();
     }
 
     public override void Exit()
     {
         player.SetScale();
         timerLand.End();
+        sfxLoop.Stop();
     }
 
     public override void GraphicsUpdate()
@@ -65,7 +73,7 @@ public class Slide : State
         velocity = ApplyAcc(velocity, ACCELERATION);
         velocity = ApplyFriction(velocity, FRICTION);
 
-        RaycastHit hitGround = CheckSurface(new Vector3(0, 0.65f, 0), Vector3.down, DISTANCE_CHECK_SLOPE);
+        RaycastHit hitGround = CheckSurface(new Vector3(0, player.cc.height/2, 0), Vector3.down, DISTANCE_CHECK_SLOPE);
         if (hitGround.collider)
         {
             Vector3 normalGround = hitGround.normal;
@@ -98,9 +106,14 @@ public class Slide : State
             stateMachine.Change(stateWaddle);
         }
 
-        if (!CheckGround())
+        if (!CheckSlide())
         {
             stateMachine.Change(stateAirborne);
+        }
+
+        if (player.inputSlide.WasPressedThisFrame())
+        {
+            stateMachine.Change(stateBrake, this);
         }
     }
 
