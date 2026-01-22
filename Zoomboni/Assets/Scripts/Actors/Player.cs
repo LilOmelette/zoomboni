@@ -32,12 +32,14 @@ public class Player : Character
     internal const float OOB_FLOOR = -500.0f;
     internal Material mat_last_touched;
     internal bool focusing = false;
+    internal Quaternion baseModelRotation;
 
     private new void Awake()
     {
         base.Awake();
         inputMove = playerInput.actions.FindAction("Move");
         inputSlide = playerInput.actions.FindAction("Slide");
+        baseModelRotation = model.transform.rotation;
     }
 
     private void Update()
@@ -100,6 +102,14 @@ public class Player : Character
         if (directionMovement.magnitude > DEAD_ZONE)
         {
             directionContainerForModel = directionMovement;
+        }
+    }
+
+    internal void UpdateContainerForModelRotation(float t)
+    {
+        if (directionMovement.magnitude > DEAD_ZONE)
+        {
+            directionContainerForModel = Vector3.Lerp(directionContainerForModel, directionMovement, t);
         }
     }
 

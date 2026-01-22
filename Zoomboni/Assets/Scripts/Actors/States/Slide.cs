@@ -8,13 +8,13 @@ public class Slide : State
 
     [SerializeField] private float START_POWER;
 
-    [SerializeField] private float ACCELERATION = 1.0f;
-    [SerializeField] private float FRICTION = 1.0f;
+    [SerializeField] private float ACCELERATION = 10.0f;
+    [SerializeField] private float FRICTION = 0.99f;
+    [SerializeField] private float STICKY = -40.0f;
+    [SerializeField] private float GRAV = -10.0f;
 
-    [SerializeField] private float MINIMUM_SPEED = 1.0f;
-
-    [SerializeField] private float STICKY;
-    [SerializeField] private float GRAV;
+    [SerializeField] private float EXIT_SPEED = 4.0f;
+    [SerializeField] private float MODEL_TURN_SPEED = 4.0f;
 
     [SerializeField] private float SLOPE_POWER;
     [SerializeField] private float SPEED_SLOPE_MIN = 8.0f;
@@ -22,25 +22,40 @@ public class Slide : State
     [SerializeField] private float SPEED_SLOPE_MUL = 1.0f;
     [SerializeField] private float MOMENTUM_SLOPE_RESIST = 0.1f;
     [SerializeField] private float DISTANCE_CHECK_SLOPE = 1.7f;
-    [SerializeField] private float DISTANCE_STAY_SLIDING;
+
+    [SerializeField] private Timer timerLand;
 
     private bool shouldIApplyStartPower = false;
 
-    public override void Enter(Component arg)
+    public override void Enter(Component statePrior)
     {
-        player.containerForModel.transform.localScale = new Vector3(1.2f, 0.8f, 1.2f);
 
-        shouldIApplyStartPower = !(arg is Airborne);
+        shouldIApplyStartPower = !(statePrior is Airborne);
+        if (statePrior is Airborne)
+        {
+            if (player.cc.velocity.y < 0)
+            {
+                timerLand.Reset();
+            }
+            
+        }
+        else
+        {
+
+            timerLand.End();
+        }
     }
 
     public override void Exit()
     {
-
+        player.SetScale();
+        timerLand.End();
     }
 
     public override void GraphicsUpdate()
     {
-        player.UpdateContainerForModelRotation();
+        player.UpdateContainerForModelRotation(MODEL_TURN_SPEED * Time.deltaTime);
+        Squash(timerLand);
     }
 
     public override void PhysicsUpdate()
@@ -78,22 +93,14 @@ public class Slide : State
 
     public override void TransitionCheck()
     {
-        if (player.cc.velocity.magnitude < MINIMUM_SPEED)
+        if (player.cc.velocity.magnitude < EXIT_SPEED)
         {
             stateMachine.Change(stateWaddle);
         }
 
         if (!CheckGround())
         {
-            if (CheckGround(distanceToFloor: DISTANCE_STAY_SLIDING))
-            {
-
-            }
-            else
-            {
-                stateMachine.Change(stateAirborne);
-            }
-            
+            stateMachine.Change(stateAirborne);
         }
     }
 

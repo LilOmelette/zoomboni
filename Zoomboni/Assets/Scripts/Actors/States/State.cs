@@ -84,7 +84,7 @@ public abstract class State : MonoBehaviour
     }
 
     
-    internal bool CheckGround(float height = 0.5f, float range = 0.75f, float distanceToFloor = 0.65f, bool checkSlope = true, Vector3 mod = new Vector3()) {
+    internal bool CheckGround(float height = 0.55f, float range = 0.75f, float distanceToFloor = 0.65f, bool checkSlope = true, Vector3 mod = new Vector3()) {
         float rangeCC = range * player.cc.radius;
         float heightCC = height * player.cc.height;
         float distanceCC = distanceToFloor * player.cc.height;
@@ -169,4 +169,15 @@ public abstract class State : MonoBehaviour
         velocity += player.velocityFromForce * Time.deltaTime;
         return velocity;
     }
+    internal void Squash(Timer timer)
+    {
+        float squash = 0;
+        if (timer.IsActive())
+        {
+            float t = timer.GetPercent();
+            squash = (1.0f - t) / 2.0f;
+        }
+        player.SetScale(squash);
+    }
+
 }

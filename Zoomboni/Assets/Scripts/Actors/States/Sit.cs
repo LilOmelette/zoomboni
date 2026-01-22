@@ -12,19 +12,36 @@ public class Sit : State
     [SerializeField] private float STICKY;
     [SerializeField] private float GRAV;
 
-    public override void Enter(Component arg)
+    [SerializeField] private Timer timerLand;
+
+    public override void Enter(Component statePrior)
     {
-        player.containerForModel.transform.localScale = new Vector3(1.1f, 0.9f, 0.9f);
+        //player.containerForModel.transform.localScale = new Vector3(1.1f, 0.9f, 0.9f);
+        if (statePrior is Airborne)
+        {
+            if (player.cc.velocity.y < 0)
+            {
+                timerLand.Reset();
+            }
+        }
+        else
+        {
+
+            timerLand.End();
+        }
     }
 
     public override void Exit()
     {
 
+        player.SetScale();
+        timerLand.End();
     }
 
     public override void GraphicsUpdate()
     {
         player.UpdateContainerForModelRotation();
+        Squash(timerLand);
     }
 
     public override void PhysicsUpdate()
@@ -40,7 +57,7 @@ public class Sit : State
     public override void TransitionCheck()
     {
         Vector3 inputMovement = player.GetInputMovement();
-        if (inputMovement.magnitude > DEAD_ZONE)
+        if (!timerLand.IsActive() && inputMovement.magnitude > DEAD_ZONE)
         {
             stateMachine.Change(stateWaddle);
         }

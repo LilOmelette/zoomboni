@@ -13,9 +13,9 @@ public class Waddle : State
     [SerializeField] private float STICKY;
     [SerializeField] private float GRAV;
 
-    public override void Enter(Component arg)
+    public override void Enter(Component statePrior)
     {
-        player.containerForModel.transform.localScale = new Vector3(1f, 1f, 1f);
+
     }
 
     public override void Exit()
