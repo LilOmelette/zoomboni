@@ -50,7 +50,7 @@ public class Waddle : State
 
         if (player.inputSlide.WasPressedThisFrame())
         {
-            stateMachine.Change(stateSlide, this);
+            stateMachine.Change(stateSlide);
         }
 
         if (!CheckSlide())

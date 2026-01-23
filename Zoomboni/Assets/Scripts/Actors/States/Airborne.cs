@@ -47,7 +47,7 @@ public class Airborne : State
 
         if (isPlayerCloseToGround)
         {
-            stateMachine.Change(stateLand, this);
+            stateMachine.Change(stateLand);
         }
     }
 }

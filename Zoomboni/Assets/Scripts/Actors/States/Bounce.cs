@@ -68,7 +68,7 @@ public class Bounce : State {
 
     public override void TransitionCheck() {
         if (!duration.IsActive()) {
-            stateMachine.Change(stateFall, this);
+            stateMachine.Change(stateFall);
         }
     }
 

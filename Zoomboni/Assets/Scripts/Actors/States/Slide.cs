@@ -26,15 +26,33 @@ public class Slide : State
 
     [SerializeField] private Timer timerLand;
 
-    [SerializeField] private AudioSource sfxStart;
-    [SerializeField] private AudioSource sfxLoop;
+    [SerializeField] protected AudioSource sfxStart;
+    [SerializeField] protected AudioSource sfxLoop;
 
     private bool shouldIApplyStartPower = false;
 
     public override void Enter(Component statePrior)
     {
-        shouldIApplyStartPower = !(statePrior is Airborne);
-        if (shouldIApplyStartPower) sfxStart.Play();
+
+        if (statePrior is Airborne)
+        {
+            shouldIApplyStartPower = false;
+        }
+        else if (statePrior is Brake)
+        {
+            Brake brake = (Brake)statePrior;
+            float chargeTime = brake.GetChargeTime();
+            shouldIApplyStartPower = chargeTime >= 1;
+        }
+        else
+        {
+            shouldIApplyStartPower = true;
+        }
+
+        if (shouldIApplyStartPower)
+        {
+            sfxStart.Play();
+        }
 
         if (statePrior is Airborne)
         {
@@ -92,6 +110,7 @@ public class Slide : State
             startPower.y = -START_POWER;
             velocity += startPower;
             shouldIApplyStartPower = false;
+            print(name + " is flying, WHEEEE!!!");
         }
 
         velocity = ApplyGravitySticky(velocity, GRAV, STICKY);
@@ -113,7 +132,7 @@ public class Slide : State
 
         if (player.inputSlide.WasPressedThisFrame())
         {
-            stateMachine.Change(stateBrake, this);
+            stateMachine.Change(stateBrake);
         }
     }
 
