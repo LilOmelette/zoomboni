@@ -5201,6 +5201,7 @@ MonoBehaviour:
   GRAVITY: -10
   ACCELERATION: 5
   FRICTION: 0.98
+  MODEL_TURN_SPEED: 4
 --- !u!1 &1736657008485724924
 GameObject:
   m_ObjectHideFlags: 0
@@ -11598,6 +11599,7 @@ MonoBehaviour:
   GRAVITY: -10
   ACCELERATION: 2.5
   FRICTION: 0.996
+  MODEL_TURN_SPEED: 1.4
 --- !u!1 &8289607607796856987
 GameObject:
   m_ObjectHideFlags: 0
