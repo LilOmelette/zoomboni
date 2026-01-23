@@ -459,7 +459,7 @@ AudioSource:
   m_Resource: {fileID: 8300000, guid: 888051d646cef334d8cbabf19e75485c, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
-  m_Pitch: 1.5
+  m_Pitch: 1.6
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -570,8 +570,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6658967333457617807}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.21319924, y: -0.598127, z: 0.1691765, w: 0.7537702}
-  m_LocalPosition: {x: 119.48236, y: -4.63645, z: 174.57733}
+  m_LocalRotation: {x: 0.21319947, y: -0.5981269, z: 0.16917664, w: 0.75377023}
+  m_LocalPosition: {x: 130.17868, y: -4.63645, z: 173.24168}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -757,7 +757,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33c7555f5db606748a283a65e22ec9bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Timer
-  max: 600
+  max: 3600
 --- !u!1 &7858004629320498734
 GameObject:
   m_ObjectHideFlags: 0

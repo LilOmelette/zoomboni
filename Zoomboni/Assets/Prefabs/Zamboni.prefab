@@ -1739,7 +1739,7 @@ ParticleSystem:
     y:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 8
+      scalar: -3
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -2437,7 +2437,7 @@ ParticleSystem:
     y:
       serializedVersion: 2
       minMaxState: 0
-      scalar: -32
+      scalar: 16
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -4973,7 +4973,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e823cd5b5d27c0f4b8256e7c12ee3e6d, type: 2}
+  - {fileID: 2100000, guid: 82736bc94ee95f847a106f2e189cf51e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5514,6 +5514,7 @@ MonoBehaviour:
   stateAirborne: {fileID: 7909290256627406183}
   STICKY: -40
   GRAV: -5
+  ANIM_SPEED: 3
 --- !u!1 &2154634495279075137
 GameObject:
   m_ObjectHideFlags: 0
@@ -5805,7 +5806,6 @@ MonoBehaviour:
   - {fileID: 4977391603830286632}
   - {fileID: 3009586430424134423}
   stateBounce: {fileID: 1398859446800550410}
-  scoreText: {fileID: 0}
 --- !u!1 &2921930454779937074
 GameObject:
   m_ObjectHideFlags: 0
@@ -5861,7 +5861,7 @@ MonoBehaviour:
   BOUNCE_INIT: 16
   BOUNCE_XZ_INIT: 0
   FIXED_BOUNCE_XZ_INIT: 0
-  anim: 
+  anim: Soar
   fxStart: {fileID: 6977227891067508502, guid: ea4f56e3bdd796d4288da0b01a9da5d4, type: 3}
   fxTrailOptional: {fileID: 0}
   sfxEnterOptional: {fileID: 1367894307724014055}
@@ -6820,7 +6820,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 3
       scalar: 0.6
-      minScalar: 0.2
+      minScalar: 0.7
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -7139,7 +7139,7 @@ ParticleSystem:
     maxNumParticles: 100
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 0
-    rotation3D: 0
+    rotation3D: 1
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
@@ -8080,7 +8080,7 @@ ParticleSystem:
     y:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 8
+      scalar: -3
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -8778,7 +8778,7 @@ ParticleSystem:
     y:
       serializedVersion: 2
       minMaxState: 0
-      scalar: -32
+      scalar: 16
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -11314,7 +11314,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e823cd5b5d27c0f4b8256e7c12ee3e6d, type: 2}
+  - {fileID: 2100000, guid: 82736bc94ee95f847a106f2e189cf51e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

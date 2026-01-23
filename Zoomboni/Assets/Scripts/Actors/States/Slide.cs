@@ -129,7 +129,7 @@ public class Slide : State
             stateMachine.Change(stateWaddle);
         }
 
-        if (!CheckSlide())
+        if (!CheckSlide() && !CheckGround())
         {
             stateMachine.Change(stateAirborne);
         }
