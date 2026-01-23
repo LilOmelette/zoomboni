@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using TMPro;
 public class Player : Character
 {
 
@@ -39,13 +38,6 @@ public class Player : Character
     internal Material mat_last_touched;
     internal bool focusing = false;
     internal Quaternion baseModelRotation;
-
-    private int score = 0;
-    public TextMeshProUGUI scoreText;
-
-    void Start(){
-        scoreText.text = "Score: " + score;
-    }
 
     private new void Awake()
     {
@@ -206,12 +198,6 @@ public class Player : Character
             stateMachine.Change(stateBounce); 
         }
         
-    }
-    public void AddPoints(int points)
-    {
-        score += points;
-        scoreText.text = "Score: " + score;
-        Debug.Log(score);
     }
 
 }
