@@ -16,6 +16,7 @@ public class Sit : State
 
     public override void Enter(Component statePrior)
     {
+        player.SetAnimation("Armature|Sit (Cooler)");
         //player.containerForModel.transform.localScale = new Vector3(1.1f, 0.9f, 0.9f);
         if (statePrior is Airborne)
         {

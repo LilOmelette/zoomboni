@@ -10,6 +10,8 @@ public class Airborne : State
     [SerializeField] private float GRAVITY = 1.0f;
     [SerializeField] private float ACCELERATION = 1.0f;
     [SerializeField] private float FRICTION = 1.0f;
+
+    [SerializeField] private float MODEL_TURN_SPEED = 4.0f;
     public override void Enter(Component statePrior)
     {
         sfxLoop.Play();
@@ -25,6 +27,7 @@ public class Airborne : State
     public override void GraphicsUpdate()
     {
 
+        player.UpdateContainerForModelRotation(MODEL_TURN_SPEED * Time.deltaTime);
         float squash = -Mathf.Abs(player.cc.velocity.y * modYVelocitySquash);
         player.SetScale(squash);
     }
@@ -47,7 +50,7 @@ public class Airborne : State
 
         if (isPlayerCloseToGround)
         {
-            stateMachine.Change(stateLand, this);
+            stateMachine.Change(stateLand);
         }
     }
 }

@@ -8,6 +8,8 @@ public class Slide : State
     [SerializeField] internal State stateBrake;
 
     [SerializeField] private float START_POWER;
+    [SerializeField] private float BOOST_MOD = 3.0f;
+    [SerializeField] private float BOOST_EXP = 2.0f;
 
     [SerializeField] private float ACCELERATION = 10.0f;
     [SerializeField] private float FRICTION = 0.99f;
@@ -26,15 +28,35 @@ public class Slide : State
 
     [SerializeField] private Timer timerLand;
 
-    [SerializeField] private AudioSource sfxStart;
-    [SerializeField] private AudioSource sfxLoop;
+    [SerializeField] protected AudioSource sfxStart;
+    [SerializeField] protected AudioSource sfxLoop;
 
-    private bool shouldIApplyStartPower = false;
+    private float startPower = -1;
 
     public override void Enter(Component statePrior)
     {
-        shouldIApplyStartPower = !(statePrior is Airborne);
-        if (shouldIApplyStartPower) sfxStart.Play();
+        player.SetAnimation("Armature|Slide");
+
+        startPower = -1f;
+        if (statePrior is Brake)
+        {
+            Brake brake = (Brake)statePrior;
+            float chargeTime = BOOST_MOD * Mathf.Pow(brake.GetChargeTime(), BOOST_EXP);
+            startPower = chargeTime;
+        }
+        else if (statePrior is Airborne)
+        {
+            startPower = 0;
+        }
+        else
+        {
+            startPower = 1;
+        }
+
+        if (startPower >= 1)
+        {
+            sfxStart.Play();
+        }
 
         if (statePrior is Airborne)
         {
@@ -86,12 +108,13 @@ public class Slide : State
         }
         velocity = ApplyForce(velocity);
 
-        if (shouldIApplyStartPower)
+        if (startPower > 0)
         {
-            Vector3 startPower = player.containerForModel.transform.forward * START_POWER;
-            startPower.y = -START_POWER;
-            velocity += startPower;
-            shouldIApplyStartPower = false;
+            Vector3 startSpeed = player.containerForModel.transform.forward * START_POWER;
+            startSpeed.y = -START_POWER;
+            velocity += startPower * startSpeed;
+            startPower = -1;
+
         }
 
         velocity = ApplyGravitySticky(velocity, GRAV, STICKY);
@@ -113,7 +136,7 @@ public class Slide : State
 
         if (player.inputSlide.WasPressedThisFrame())
         {
-            stateMachine.Change(stateBrake, this);
+            stateMachine.Change(stateBrake);
         }
     }
 

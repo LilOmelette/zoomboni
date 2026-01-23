@@ -33,7 +33,8 @@ public class StateMachine : MonoBehaviour {
     private void LateUpdate() {
     }
 
-    public virtual void Change(State to, Component arg = null) {
+    public virtual void Change(State to) {
+        State prev = state;
         if (to == null) {
             Debug.LogError("State is null!");
             return;
@@ -42,14 +43,10 @@ public class StateMachine : MonoBehaviour {
             to.ReEnter(null);
             return;
         }
-        if (arg == null)
-        {
-            arg = to;
-        }
         Debug.Log(transform.parent.name + " TO: " + to.name + " FROM: " + state.name);
         state.Exit();
         state = to;
-        state.Enter(arg);
+        state.Enter(prev);
     }
 
     public void OnReset() {
