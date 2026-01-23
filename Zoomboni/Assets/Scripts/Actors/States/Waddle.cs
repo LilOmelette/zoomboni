@@ -16,6 +16,7 @@ public class Waddle : State
 
     public override void Enter(Component statePrior)
     {
+        player.SetAnimation("Armature|waddle");
         sfxWaddleLoop.Play();
     }
 

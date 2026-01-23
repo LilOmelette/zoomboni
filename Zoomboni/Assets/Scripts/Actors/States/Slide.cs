@@ -8,6 +8,8 @@ public class Slide : State
     [SerializeField] internal State stateBrake;
 
     [SerializeField] private float START_POWER;
+    [SerializeField] private float BOOST_MOD = 3.0f;
+    [SerializeField] private float BOOST_EXP = 2.0f;
 
     [SerializeField] private float ACCELERATION = 10.0f;
     [SerializeField] private float FRICTION = 0.99f;
@@ -29,27 +31,29 @@ public class Slide : State
     [SerializeField] protected AudioSource sfxStart;
     [SerializeField] protected AudioSource sfxLoop;
 
-    private bool shouldIApplyStartPower = false;
+    private float startPower = -1;
 
     public override void Enter(Component statePrior)
     {
+        player.SetAnimation("Armature|Slide");
 
-        if (statePrior is Airborne)
-        {
-            shouldIApplyStartPower = false;
-        }
-        else if (statePrior is Brake)
+        startPower = -1f;
+        if (statePrior is Brake)
         {
             Brake brake = (Brake)statePrior;
-            float chargeTime = brake.GetChargeTime();
-            shouldIApplyStartPower = chargeTime >= 1;
+            float chargeTime = BOOST_MOD * Mathf.Pow(brake.GetChargeTime(), BOOST_EXP);
+            startPower = chargeTime;
+        }
+        else if (statePrior is Airborne)
+        {
+            startPower = 0;
         }
         else
         {
-            shouldIApplyStartPower = true;
+            startPower = 1;
         }
 
-        if (shouldIApplyStartPower)
+        if (startPower >= 1)
         {
             sfxStart.Play();
         }
@@ -104,13 +108,13 @@ public class Slide : State
         }
         velocity = ApplyForce(velocity);
 
-        if (shouldIApplyStartPower)
+        if (startPower > 0)
         {
-            Vector3 startPower = player.containerForModel.transform.forward * START_POWER;
-            startPower.y = -START_POWER;
-            velocity += startPower;
-            shouldIApplyStartPower = false;
-            print(name + " is flying, WHEEEE!!!");
+            Vector3 startSpeed = player.containerForModel.transform.forward * START_POWER;
+            startSpeed.y = -START_POWER;
+            velocity += startPower * startSpeed;
+            startPower = -1;
+
         }
 
         velocity = ApplyGravitySticky(velocity, GRAV, STICKY);

@@ -5082,6 +5082,8 @@ MonoBehaviour:
   stateAirborne: {fileID: 6250249677574907779}
   stateBrake: {fileID: 2033783125199638335}
   START_POWER: 0
+  BOOST_MOD: 3
+  BOOST_EXP: 2
   ACCELERATION: 7
   FRICTION: 0.98
   STICKY: -100
@@ -5563,16 +5565,18 @@ MonoBehaviour:
   stateAirborne: {fileID: 6250249677574907779}
   stateBrake: {fileID: 2033783125199638335}
   START_POWER: 4
+  BOOST_MOD: 2.4
+  BOOST_EXP: 2
   ACCELERATION: 7
   FRICTION: 0.994
-  STICKY: -100
+  STICKY: -200
   GRAV: -4
   EXIT_SPEED: 4
   MODEL_TURN_SPEED: 0.7
-  SLOPE_POWER: 64
+  SLOPE_POWER: 16
   SPEED_SLOPE_MIN: 4
-  SPEED_SLOPE_POW: 10
-  SPEED_SLOPE_MUL: 7
+  SPEED_SLOPE_POW: 4
+  SPEED_SLOPE_MUL: 4
   MOMENTUM_SLOPE_RESIST: 0.2
   DISTANCE_CHECK_SLOPE: 1.7
   timerLand: {fileID: 2573270348832366426}
@@ -5786,7 +5790,7 @@ MonoBehaviour:
   animator: {fileID: 3601972056023250975}
   GRAVITY: -40
   GROUND_HEIGHT: 0.65
-  GROUND_RANGE: 0.85
+  GROUND_RANGE: 0.35
   DISTANCE_TO_FLOOR: 0.75
   DEAD_ZONE: 0.1
   ANGLE_MAX: 1
@@ -6695,7 +6699,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 7
+      scalar: 12
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -11542,7 +11546,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33c7555f5db606748a283a65e22ec9bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Timer
-  max: 30
+  max: 36
 --- !u!1 &8250595076696238490
 GameObject:
   m_ObjectHideFlags: 0
