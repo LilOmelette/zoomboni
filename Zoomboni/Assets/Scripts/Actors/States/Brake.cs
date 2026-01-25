@@ -27,6 +27,7 @@ public class Brake : Slide
         fx.Stop();
         fxTurbo.Stop();
         player.SetScale();
+        player.model.transform.localPosition = new Vector3(0, 0, 0);
     }
 
     public override void GraphicsUpdate()
@@ -38,7 +39,9 @@ public class Brake : Slide
             fxTurbo.Play();
         }
 
-        player.SetScale(0.4f);
+        float t = Mathf.Clamp(timerCharge.GetPercent(), 0, 1);
+        player.SetScale(0 + (0.6f * t));
+        player.model.transform.localPosition = new Vector3(0, -0.25f, 0);
     }
 
     public override void TransitionCheck()

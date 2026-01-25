@@ -31,6 +31,8 @@ public class Slide : State
     [SerializeField] protected AudioSource sfxStart;
     [SerializeField] protected AudioSource sfxLoop;
 
+    [SerializeField] protected ParticleSystem fxSlide;
+
     private float startPower = -1;
 
     public override void Enter(Component statePrior)
@@ -73,6 +75,7 @@ public class Slide : State
         }
 
         sfxLoop.Play();
+        fxSlide.Play();
     }
 
     public override void Exit()
@@ -80,6 +83,7 @@ public class Slide : State
         player.SetScale();
         timerLand.End();
         sfxLoop.Stop();
+        fxSlide.Stop();
     }
 
     public override void GraphicsUpdate()

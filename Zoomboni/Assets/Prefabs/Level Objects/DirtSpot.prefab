@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Collectable
   POINTS: 10
+  prefabOnCollect: {fileID: 5891603102288214815, guid: f7b42797aecdf3e4697dc38776cb1ae5, type: 3}
 --- !u!135 &7033380010004778977
 SphereCollider:
   m_ObjectHideFlags: 0
