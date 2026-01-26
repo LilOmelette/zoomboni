@@ -1015,10 +1015,6 @@ PrefabInstance:
       propertyPath: IgnoreTag
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 3331248875395003570, guid: 0abc4ad37b5e9084289eb03e1dd4d8ff, type: 3}
-      propertyPath: CollideAgainst.m_Bits
-      value: 64
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Collectable : MonoBehaviour
@@ -18,4 +19,8 @@ public class Collectable : MonoBehaviour
         }
     }
 
+    internal float GetScore()
+    {
+        return POINTS;
+    }
 }

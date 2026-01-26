@@ -14,11 +14,14 @@ public class LevelManager : MonoBehaviour
 
     public PlayerInput playerInput;
 
-    private int score = 0;
+    private int points = 0;
 
     private InputAction
             inputReset,
             inputEscape;
+
+    private float MAX_POINTS = 0;
+    private bool ended = false;
 
     /** SINGLETON **/
     private static LevelManager instance;
@@ -40,15 +43,22 @@ public class LevelManager : MonoBehaviour
         QualitySettings.vSyncCount = 1;
         Application.targetFrameRate = 60;
 
-        scoreText.text = "Score: " + score;
         finishText.text = "";
         timerLevelDuration.Reset();
         inputReset = playerInput.actions.FindAction("Reset");
         inputEscape = playerInput.actions.FindAction("Escape");
+
+        MAX_POINTS = 0;
+        Collectable[] collectables = FindObjectsByType<Collectable>(FindObjectsSortMode.None);
+        foreach(Collectable collectable in collectables)
+        {
+            MAX_POINTS += collectable.GetScore();
+        }
+        ended = false;
     }
     public void AddPoints(int points)
     {
-        score += points;
+        this.points += points;
         sfxClean.Play();
     }
 
@@ -74,13 +84,14 @@ public class LevelManager : MonoBehaviour
 
     private void UpdateUI()
     {
-        if (timerLevelDuration.JustDeactivated())
+        if (points == MAX_POINTS)
         {
-            scoreText.text = "";
-            timeText.text = "";
-            finishText.text = "Time's up! Score : " + score + ". Press R to reset!";
+            End(true);
         }
-
+        else if (timerLevelDuration.JustDeactivated())
+        {
+            End(false);
+        }
         else if (timerLevelDuration.IsActive())
         {
             float timeRemaining =
@@ -98,8 +109,65 @@ public class LevelManager : MonoBehaviour
 
             timeText.text = "Time: " + timeRemaining;
 
-            scoreText.text = "Score: " + score;
+            scoreText.text = "Points: " + points + "/" + MAX_POINTS;
         }
+    }
+
+    private void End(bool success)
+    {
+        if (ended) return;
+
+        ended = true;
+        scoreText.text = "";
+        timeText.text = "";
+        float TIME_N = timerLevelDuration.GetPercent() * timerLevelDuration.GetMax() / 60.0f;
+        TIME_N = Mathf.Round(TIME_N * 100.0f) / 100.0f;
+
+        if (success)
+        {
+            timerLevelDuration.End();
+            finishText.text = "Wow! You cleaned up in " + TIME_N + " seconds!\n Press R to reset!";
+
+            float TIME_1 = GetTime("1");
+            float TIME_2 = GetTime("2");
+            float TIME_3 = GetTime("3");
+
+            if (TIME_N < TIME_1)
+            {
+                TIME_3 = TIME_2;
+                TIME_2 = TIME_1;
+                TIME_1 = TIME_N;
+            }
+            else if (TIME_N < TIME_2)
+            {
+                TIME_3 = TIME_2;
+                TIME_2 = TIME_N;
+            }
+            else if (TIME_N < TIME_3)
+            {
+                TIME_3 = TIME_N;
+            }
+
+            Debug.Log("Best Times: 1: " + TIME_1 + ", 2: " + TIME_2 + ", 3: " + TIME_3);
+            PlayerPrefs.SetFloat("TIME_1", TIME_1 == float.MaxValue ? 0 : TIME_1);
+            PlayerPrefs.SetFloat("TIME_2", TIME_2 == float.MaxValue ? 0 : TIME_2);
+            PlayerPrefs.SetFloat("TIME_3", TIME_3 == float.MaxValue ? 0 : TIME_3);
+            PlayerPrefs.Save();
+        }
+
+        else
+        {
+
+            finishText.text = "Time out...\n Press R to reset!";
+        }
+        
+    }
+
+    private float GetTime(string n)
+    {
+        float time = PlayerPrefs.GetFloat("TIME_" + n);
+        if (time == 0) return float.MaxValue;
+        else return time;
     }
 
 }
