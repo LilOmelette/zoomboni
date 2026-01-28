@@ -21,6 +21,10 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2304307911343543264, guid: e41d5729fff4bb74a83d7302f36199a1, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: dbc47e2c4a06bfd40ba87f5d0d329a39, type: 2}
+    - target: {fileID: 2304307911343543264, guid: e41d5729fff4bb74a83d7302f36199a1, type: 3}
       propertyPath: m_Offset.z
       value: 2
       objectReference: {fileID: 0}
@@ -78,7 +82,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5134305663350052131, guid: e41d5729fff4bb74a83d7302f36199a1, type: 3}
       propertyPath: m_Name
-      value: DirtSpotBig Variant
+      value: DirtSpotBig
       objectReference: {fileID: 0}
     - target: {fileID: 8557331324169737462, guid: e41d5729fff4bb74a83d7302f36199a1, type: 3}
       propertyPath: POINTS

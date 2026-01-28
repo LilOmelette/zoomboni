@@ -58,17 +58,17 @@ public class Airborne : State
 
 
         Vector3 inputMovement = player.GetInputMovement();
-        if (Mathf.Sign(inputMovement.x) == -1)
+        if (inputMovement.x == 0)
+        {
+            player.SetAnimation(animNeutral);
+        }
+        else if (Mathf.Sign(inputMovement.x) == -1)
         {
             player.SetAnimation(animLeft);
         }
         else if (Mathf.Sign(inputMovement.x) == 1)
         {
             player.SetAnimation(animRight);
-        }
-        else
-        {
-            player.SetAnimation(animNeutral);
         }
     }
 
