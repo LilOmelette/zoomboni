@@ -3,7 +3,32 @@ guid: 62919a5df99bfb2488e4fdcf1e605f19
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GOOGLES
+    second: {fileID: 2100000, guid: c317350346dbdad4cbfa6868dd9d2bb1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.002
+    second: {fileID: 2100000, guid: 47853971777913c44b37b8b88d0aa95f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ZAM
+    second: {fileID: 2100000, guid: 29c37f46873fc7b47877b96d3db12839, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ZAMFEET
+    second: {fileID: 2100000, guid: 16be28a8eab365b4c955c21edc5a0d48, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: sponge_
+    second: {fileID: 2100000, guid: 44d909d9e2d391144944496c213adb05, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

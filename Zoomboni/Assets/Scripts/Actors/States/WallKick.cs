@@ -53,8 +53,11 @@ public class WallKick : State
             if (hit.collider)
             {
                 Vector3 normal = hit.normal;
-                Vector3 angle = Vector3.Reflect(velocity.normalized, normal.normalized);
-                float power = kickStrength * velocity.magnitude;
+                Vector3 velocityNew = velocity;
+                velocityNew.y = 0;
+                velocityNew *= velocity.magnitude/velocityNew.magnitude;
+                Vector3 angle = Vector3.Reflect(velocityNew.normalized, normal.normalized);
+                float power = kickStrength * velocityNew.magnitude;
                 velocity = angle * power;
                 player.FlipModelRotation(velocity);
             }

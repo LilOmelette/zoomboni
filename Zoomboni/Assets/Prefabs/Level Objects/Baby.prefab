@@ -153,3 +153,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c55c1822c7059564ebcbabcb7a18c84a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Baby
+  START_VELOCITY_XZ: 30
