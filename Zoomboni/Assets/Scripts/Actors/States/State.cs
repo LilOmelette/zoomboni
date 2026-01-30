@@ -165,13 +165,24 @@ public abstract class State : MonoBehaviour
     internal RaycastHit CheckSurface(
         Vector3 distanceFromTransform, Vector3 direction, float distance, bool debugOn = false) {
         Ray ray = new Ray(player.transform.position + distanceFromTransform, direction);
+        RaycastHit hitFloor;
         Physics.Raycast(
             ray, 
-            out RaycastHit hitFloor, 
+            out hitFloor, 
             distance, 
             1 << LayerMask.NameToLayer("Default"), 
             queryTriggerInteraction:QueryTriggerInteraction.Ignore
         );
+        if (!hitFloor.collider)
+        {
+            Physics.Raycast(
+            ray,
+            out hitFloor,
+            distance,
+            1 <<  LayerMask.NameToLayer("CameraBoundary"),
+            queryTriggerInteraction: QueryTriggerInteraction.Ignore
+        );
+        }
 
         if (debugOn) {
             Debug.DrawRay(ray.origin, ray.direction, Color.white, distance);
